@@ -1,0 +1,44 @@
+name: Build deployment assets
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "app.py"
+      - "churn_features.py"
+      - "train_deploy.py"
+      - "requirements.txt"
+      - ".github/workflows/build-deployment-assets.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Train, validate and build assets
+        run: python train_deploy.py
+
+      - name: Commit generated model and dataset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add churn_pipeline.joblib telco_customer_churn.csv model_metrics.json
+          if git diff --cached --quiet; then
+            echo "No generated asset changes to commit."
+          else
+            git commit -m "Build validated deployment assets [skip ci]"
+            git push
+          fi
