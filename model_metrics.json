@@ -1,0 +1,21 @@
+{
+  "best_model": "Logistic Regression",
+  "threshold": 0.34,
+  "accuracy": 0.6749,
+  "precision": 0.4450,
+  "recall": 0.9091,
+  "f1": 0.5975,
+  "f2": 0.7522,
+  "roc_auc": 0.8446,
+  "pr_auc": 0.6493,
+  "confusion_matrix": [[611, 424], [34, 340]],
+  "total_customers": 7043,
+  "train_customers": 5634,
+  "test_customers": 1409,
+  "historical_churn_rate": 0.2654,
+  "comparison": [
+    {"model": "Logistic Regression", "cv_roc_auc_mean": 0.8469},
+    {"model": "Random Forest", "cv_roc_auc_mean": 0.8459},
+    {"model": "XGBoost", "cv_roc_auc_mean": 0.8433}
+  ]
+}
